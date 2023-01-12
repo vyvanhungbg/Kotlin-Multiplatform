@@ -4,19 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.suspend.android.networking_datastorage_demo.data.remote.repository.RocketLaunchRepository
-import com.suspend.android.networking_datastorage_demo.model.RocketLaunch
+import com.suspend.android.networking_datastorage_demo.data.remote.repository.ITVShowRepository
+import com.suspend.android.networking_datastorage_demo.data.remote.repository.TVShowRepository
+import com.suspend.android.networking_datastorage_demo.model.TVShow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: RocketLaunchRepository): ViewModel() {
+class MainViewModel(private val repository: ITVShowRepository) : ViewModel() {
 
-    private val _rocketLaunchList = MutableLiveData<List<RocketLaunch>>()
-    val rocketLaunchList: LiveData<List<RocketLaunch>> get() = _rocketLaunchList
+    private val _rocketLaunchList = MutableLiveData<List<TVShow>>()
+    val rocketLaunchList: LiveData<List<TVShow>> get() = _rocketLaunchList
 
-    fun getRocketLaunch(){
+    fun getRocketLaunch() {
         viewModelScope.launch(Dispatchers.IO) {
-            _rocketLaunchList.postValue(repository.getAllRocketsLaunch())
+            _rocketLaunchList.postValue(repository.getAllTVShow().tv_shows)
         }
     }
 

@@ -2,35 +2,44 @@ package com.suspend.android.networking_datastorage_demo.di
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
 
 val networkModule = module {
-    single { provideHttpClient() }
+    single { provideHttpClient2() }
+}
+
+
+fun provideHttpClient2() = HttpClient {
+    install(ContentNegotiation) {
+        json(
+            Json {
+                ignoreUnknownKeys = true
+                useAlternativeNames = true
+                coerceInputValues = true
+
+            }
+        )
+    }
 }
 
 fun provideHttpClient() = HttpClient(CIO) {
     install(ContentNegotiation) {
         json(Json {
             ignoreUnknownKeys = true
-            useAlternativeNames = false
+            useAlternativeNames = true
+            coerceInputValues = true
         })
-
-
-
-      /*  engine {
-            val loggingInterceptor = HttpLoggingInterceptor()
-            loggingInterceptor.level = Level.BODY
-            addInterceptor(loggingInterceptor)
-        }*/
-
     }
     install(Logging) {
         logger = Logger.DEFAULT
@@ -40,5 +49,22 @@ fun provideHttpClient() = HttpClient(CIO) {
                 println(message)
             }
         }
+        filter {
+            it.method == HttpMethod.Post
+        }
+    }
+    install(HttpTimeout) {
+        requestTimeoutMillis = 15000L
+        connectTimeoutMillis = 15000L
+        socketTimeoutMillis = 15000L
+    }
+
+    // Apply to all requests
+    defaultRequest {
+        // Parameter("api_key", "some_api_key")
+        // Content Type
+        /*if ( != HttpMethod.Get) contentType(ContentType.Application.Json)
+        accept(ContentType.Application.Json)*/
+//        headers.set()
     }
 }

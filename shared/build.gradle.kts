@@ -2,6 +2,8 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     kotlin("plugin.serialization") version "1.7.21"
+    id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 kotlin {
@@ -23,6 +25,10 @@ kotlin {
 
     val koin_core_version = "3.2.0"
     val okhttp_version = "4.7.2"
+    val sqlDelightVersion = "1.5.3"
+    val coroutinesVersion = "1.6.2"
+
+
     sourceSets {
         val commonMain by getting{
             dependencies{
@@ -41,11 +47,10 @@ kotlin {
 
                 implementation( "io.insert-koin:koin-core:${koin_core_version}")
 
-                implementation("io.insert-koin:koin-test:${koin_core_version}")
-               /* implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                //implementation("io.insert-koin:koin-test:${koin_core_version}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")*/
-
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
 
 //                implementation("com.squareup.okhttp3:okhttp:${okhttp_version}")
 //                implementation("com.squareup.okhttp3:logging-interceptor:${okhttp_version}")

@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("kotlin-kapt")
 }
-
 android {
     namespace = "com.suspend.android.networking_datastorage_demo.android"
     compileSdk = 32
@@ -56,6 +56,9 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
 
      val koin_version = "3.2.0"
      val koin_core_version = "3.2.0"

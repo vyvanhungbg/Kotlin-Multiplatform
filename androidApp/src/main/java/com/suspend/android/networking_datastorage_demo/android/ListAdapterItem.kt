@@ -4,28 +4,32 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.suspend.android.networking_datastorage_demo.android.databinding.ItemBinding
-import com.suspend.android.networking_datastorage_demo.model.RocketLaunch
-import com.suspend.android.networking_datastorage_demo.utils.toDateForHuman
+import com.suspend.android.networking_datastorage_demo.android.databinding.ItemTvShowBinding
+import com.suspend.android.networking_datastorage_demo.model.TVShow
 
-class ListAdapterItem(private val action: (RocketLaunch) -> Unit) :
-    ListAdapter<RocketLaunch, ListAdapterItem.ViewHolder>(ListAdapterItem.diffUtil) {
+class ListAdapterItem(private val action: (TVShow) -> Unit) :
+    ListAdapter<TVShow, ListAdapterItem.ViewHolder>(ListAdapterItem.diffUtil) {
 
 
-    inner class ViewHolder(val binding: ItemBinding) :
+    inner class ViewHolder(val binding: ItemTvShowBinding) :
         androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: RocketLaunch) {
-            binding.textViewTitle.text = item.details
-            binding.textViewContent.text = item.details
-            binding.textViewTime.text = item.launchDateUTC.toDateForHuman()
-            binding.imageViewDelete.setOnClickListener {
-                action(item)
+        fun bind(itemData: TVShow) {
+            binding.apply {
+                textName.text = itemData.name
+                textStatus.text = itemData.status
+                textStartDate.text = itemData.startDate
+                textNetwork.text = itemData.network
+                imageTvShow.loadImage(itemData.thumbnail)
+                root.setOnClickListener {
+                    action(itemData)
+                }
             }
+
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemTvShowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(binding)
     }
@@ -35,11 +39,11 @@ class ListAdapterItem(private val action: (RocketLaunch) -> Unit) :
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<RocketLaunch>() {
-            override fun areItemsTheSame(oldItem: RocketLaunch, newItem: RocketLaunch) =
-                oldItem.launchDateUTC == newItem.launchDateUTC
+        val diffUtil = object : DiffUtil.ItemCallback<TVShow>() {
+            override fun areItemsTheSame(oldItem: TVShow, newItem: TVShow) =
+                oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: RocketLaunch, newItem: RocketLaunch) =
+            override fun areContentsTheSame(oldItem: TVShow, newItem: TVShow) =
                 oldItem == newItem
         }
     }
