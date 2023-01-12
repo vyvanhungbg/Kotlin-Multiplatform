@@ -10,11 +10,9 @@ import io.ktor.client.request.request
 import io.ktor.http.HttpMethod
 
 class TVShowDataSource(private val httpClient: HttpClient) : ITVShowDataSource.Remote {
-
+    @Throws(Exception::class)
     override suspend fun getAllTVShow(): Page {
-        return httpClient.request(ApiConstant.URL.MOST_POPULAR){
-            method = HttpMethod.Get
-        }.body()
+        return httpClient.get(ApiConstant.URL.MOST_POPULAR).body()
     }
 
 }

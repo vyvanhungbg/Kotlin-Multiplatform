@@ -5,6 +5,7 @@ import com.suspend.android.networking_datastorage_demo.model.TVShow
 
 interface ITVShowDataSource {
     interface Remote{
+        @Throws(Exception::class)
         suspend fun getAllTVShow(): Page
     }
 }
