@@ -3,6 +3,7 @@ package com.suspend.android.networking_datastorage_demo.di
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.cache.*
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.DEFAULT
@@ -31,6 +32,8 @@ fun provideHttpClient2() = HttpClient {
             }
         )
     }
+    install(HttpCache)
+
 }
 
 fun provideHttpClient() = HttpClient(CIO) {

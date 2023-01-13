@@ -24,9 +24,10 @@ class MainController: UIViewController {
        
         tableViewMain.delegate = self
         tableViewMain.dataSource = self
+        // tableViewMain.estimatedRowHeight = 210
         tableViewMain.register(UINib(nibName: "ItemTvShowTableViewCell", bundle: nil), forCellReuseIdentifier: "TVShowCell")
         
-        self.tableViewMain.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 0, right: 0)
+        // self.tableViewMain.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 0, right: 0)
         
         
         dataSourceTVShow.getAllTVShow(completionHandler: { (page: Page?,  error: Error?) in
@@ -38,7 +39,7 @@ class MainController: UIViewController {
             }
 
             //self.tableViewMain.reloadData()
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [unowned self] in
                 // UI code
                 self.tableViewMain.reloadData()
             }
@@ -60,20 +61,25 @@ class MainController: UIViewController {
 
 }
 
-extension   MainController:UITableViewDelegate{
+extension MainController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("here")
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 240
+    }
 }
-extension   MainController:UITableViewDataSource{
+extension MainController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print(tvShows.count)
         return tvShows.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TVShowCell",for: indexPath) as! ItemTvShowTableViewCell
         
-        cell.contentView.layoutMargins = .init(top: 12.0, left: 23.5, bottom: 0.0, right: 23.5)
+        // cell.contentView.layoutMargins = .init(top: 12.0, left: 23.5, bottom: 0.0, right: 23.5)
         
         let tvShow = tvShows[indexPath.row]
         cell.bindData(tvShow: tvShow)
